@@ -1,6 +1,14 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   return (
     <nav className="block w-full max-w-screen px-4 py-2 mx-auto bg-white shadow-md rounded-md border border-gray-200 lg:px-8 lg:py-3">
       <div className="container flex flex-wrap items-center justify-between mx-auto text-slate-800">
@@ -25,11 +33,24 @@ export default function Navbar() {
             ))}
             <div className="bg-blue-800 rounded-3xl border-blue-800 hover:bg-purple-800 pl-1 pr-1">
               <li className="flex items-center p-1 text-sm gap-x-2 text-slate-600 hover:text-blue-600 transition duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 text-white group-hover:text-blue-600 transition duration-300">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-              </svg>
-              <Link to={"/sign-in"} className="flex items-center font-medium text-white" >Login</Link>
-            </li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 text-white group-hover:text-blue-600 transition duration-300">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                {
+                  user ? (
+                    <div>
+                      <button onClick={()=> {
+                        localStorage.clear();
+                        navigator('/')
+                      }}>
+                        Logout
+                      </button>
+                    </div>
+                  ) : (
+                    <Link to={"/sign-in"} className="flex items-center font-medium text-white" >Login</Link>
+                  )
+                }
+              </li>
             </div>
           </ul>
         </div>
